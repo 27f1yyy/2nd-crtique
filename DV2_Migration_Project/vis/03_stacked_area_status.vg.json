@@ -1,0 +1,53 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 320,
+  "data": {
+    "url": "data/chart3_visa_groups_stacked_area.csv",
+    "format": { "type": "csv" }
+  },
+  "transform": [
+    {
+      "fold": ["permanent_visas", "temporary_visas", "nz_citizens", "aus_citizens"],
+      "as": ["visa_type", "count"]
+    },
+    {
+      "calculate": "toNumber(datum.count)",
+      "as": "count"
+    },
+    {
+      "calculate": "datum.visa_type == 'permanent_visas' ? 'Permanent Visas' : datum.visa_type == 'temporary_visas' ? 'Temporary Visas' : datum.visa_type == 'nz_citizens' ? 'NZ Citizens' : 'Australian Citizens'",
+      "as": "visa_label"
+    }
+  ],
+  "mark": { "type": "area", "opacity": 0.85 },
+  "encoding": {
+    "x": {
+      "field": "year",
+      "type": "ordinal",
+      "title": null,
+      "axis": { "labelAngle": -45, "labelFontSize": 11 }
+    },
+    "y": {
+      "field": "count",
+      "type": "quantitative",
+      "title": "Number of People",
+      "stack": "zero",
+      "axis": { "format": "," }
+    },
+    "color": {
+      "field": "visa_label",
+      "type": "nominal",
+      "title": "Traveller Type",
+      "scale": {
+        "domain": ["Permanent Visas", "Temporary Visas", "NZ Citizens", "Australian Citizens"],
+        "range": ["#245f73", "#4a9ab5", "#82c4d4", "#c8e8f0"]
+      }
+    },
+    "tooltip": [
+      { "field": "year", "type": "ordinal", "title": "Year" },
+      { "field": "visa_label", "type": "nominal", "title": "Type" },
+      { "field": "count", "type": "quantitative", "title": "Count", "format": "," }
+    ]
+  }
+}
