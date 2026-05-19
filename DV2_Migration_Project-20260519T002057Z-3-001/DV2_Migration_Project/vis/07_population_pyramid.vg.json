@@ -1,0 +1,57 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 400,
+  "data": {
+    "url": "data/chart7_population_pyramid_2023_24.csv",
+    "format": { "type": "csv" }
+  },
+  "transform": [
+    { "calculate": "toNumber(datum.males_neg)", "as": "males_neg" },
+    { "calculate": "toNumber(datum.females_2023_24)", "as": "females_2023_24" },
+    { "calculate": "toNumber(datum.age)", "as": "age" }
+  ],
+  "layer": [
+    {
+      "mark": { "type": "bar", "color": "#4a9ab5" },
+      "encoding": {
+        "y": {
+          "field": "age",
+          "type": "ordinal",
+          "title": "Age",
+          "axis": { "labelFontSize": 10, "labelOverlap": true }
+        },
+        "x": {
+          "field": "males_neg",
+          "type": "quantitative",
+          "title": "Males",
+          "axis": {
+            "format": "~s",
+            "labelExpr": "abs(datum.value)"
+          }
+        },
+        "tooltip": [
+          { "field": "age", "type": "ordinal", "title": "Age" },
+          { "field": "males_2023_24", "type": "quantitative", "title": "Males", "format": "," }
+        ]
+      }
+    },
+    {
+      "mark": { "type": "bar", "color": "#245f73" },
+      "encoding": {
+        "y": { "field": "age", "type": "ordinal" },
+        "x": {
+          "field": "females_2023_24",
+          "type": "quantitative",
+          "title": "Females",
+          "axis": { "format": "~s" }
+        },
+        "tooltip": [
+          { "field": "age", "type": "ordinal", "title": "Age" },
+          { "field": "females_2023_24", "type": "quantitative", "title": "Females", "format": "," }
+        ]
+      }
+    }
+  ],
+  "resolve": { "scale": { "x": "shared" } }
+}
